@@ -19,7 +19,7 @@ conv_index = 1;
 fc = func_curve();
 
 % define constants
-peakboxrange = linspace(100,1500,20); % peak box size [~601.6]
+peakboxrange = linspace(10,1500,20); % peak box size [~601.6]
 % peakboxrange = [4000/2];  %[601.6/2]
 dt = 10; % s
 time_register = []; % time register
@@ -61,8 +61,8 @@ for jjj = 1:length(names)
                 ydim = size(pic,1); % dimension
                 xdim = size(pic,2);
                 % subject to change for every trail, but consistent within the trail
-                leftcut = 1700; % cutoff dimension
-                rightcut = 5000;
+                leftcut = 1500; % cutoff dimension
+                rightcut = 6000;
                 deg = 4; 
                 
                 % figure(1);
@@ -115,14 +115,9 @@ for jjj = 1:length(names)
                 plot(newbdx,newbdy,'o','MarkerSize',2); axis equal
                 hold on
 
-                % find X and Y max gap; box size larger than this value is 
                 maxDiffX = max(newbdx) - min(newbdx);
-                maxDiffY = max(newbdy) - min(newbdy); 
-                takeVal = min(maxDiffX, maxDiffY);
-                if jjj == 1
-                    peakboxrange = linspace(100,takeVal,20);
-                end
-
+                maxDi
+    
                 % find peak
                 prr = [0.9*mean(newbdx),1.1*mean(newbdx)];
                 indr = (newbdx >= prr(1) & newbdx <= prr(2));
