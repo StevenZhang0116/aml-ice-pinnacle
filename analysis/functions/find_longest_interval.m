@@ -1,6 +1,6 @@
 %--------------------------------------------------------------------------
 % To find the longest interval of indices where the range of corresponding Y-values 
-% is smaller than a certain value 
+% is smaller than a certain value [threshold]
 %
 % Steven Zhang, Courant Institute
 % Updated Jul Mar 2023
@@ -20,7 +20,7 @@ function [start_idx, end_idx] = find_longest_interval(XY, threshold)
 
     % Iterate through Y to find the longest interval
     for i = 2:length(Y)
-        if abs(Y(i) - Y(i - 1)) <= threshold
+        if abs(max(Y(current_start_idx:i)) - min(Y(current_start_idx:i))) <= threshold
             current_end_idx = i;
         else
             current_interval_length = current_end_idx - current_start_idx + 1;
@@ -42,3 +42,6 @@ function [start_idx, end_idx] = find_longest_interval(XY, threshold)
         end_idx = current_end_idx;
     end
 end
+
+
+

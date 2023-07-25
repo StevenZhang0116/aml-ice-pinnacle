@@ -33,8 +33,7 @@ testdemo = 0;
 testrange = 1;
 
 % define constants, iterative object, and other data structures
-boxnumcount = 50;
-boxstabthreshold = 0.02;
+boxnumcount = 200;
 peakboxrange = linspace(100,1500,boxnumcount); % peak box half size [~601.6]
 % peakboxrange = [4000/2];  %[601.6/2]
 dt = 10; % s
@@ -216,7 +215,7 @@ for jjj = 1:length(names)
                 xlabel('Box Length / 2 (pixel)')
                 ylabel('Radius of Curvature (cm)')
                 title('BoxLength Sensitivity')
-                [minidx,maxidx] = find_longest_interval([peakboxrange;rk_lst]',boxstabthreshold);
+                [minidx,maxidx] = find_longest_interval([peakboxrange;rk_lst]',0.02);
                 % visually 
                 xline(peakboxrange(minidx),'LineStyle','--');
                 xline(peakboxrange(maxidx),'LineStyle','--');
@@ -361,34 +360,27 @@ assert(length(time_register) == length(boxidxCell));
 if testrange == 1
     figure(1)
     hold on
-    for iii = 1:12
+    for iii = 1:length(boxidxCell)
         boxrr = boxidxCell{iii};
-        tt = time_register(iii);
-        plot([tt tt],[boxrr(1) boxrr(end)],'LineStyle','-.','LineWidth',2);
+        tt = time_register(i)
+        plot([iii iii],[boxrr(1) boxrr(end)],'LineStyle','-.','LineWidth',2);
     end
-    for iii = 2:12
-        oldtt = time_register(iii-1);
-        curtt = time_register(iii);
+    for iii = 2:length(boxidxCell)
         oldrr = boxidxCell{iii-1};
         currr = boxidxCell{iii};
-        oldtop = [oldtt,oldrr(end)];
-        oldbot = [oldtt,oldrr(1)]; 
-        curtop = [curtt,currr(end)];
-        curbot = [curtt,currr(1)];
+        oldtop = [iii-1,oldrr(end)];
+        oldbot = [iii-1,oldrr(1)]; 
+        curtop = [iii,currr(end)];
+        curbot = [iii,currr(1)];
         plot([oldtop(1) curtop(1)],[oldtop(2) curtop(2)],'LineStyle','--','LineWidth',2,'Color','red')
         plot([oldbot(1) curbot(1)],[oldbot(2) curbot(2)],'LineStyle','--','LineWidth',2,'Color','red')
     end
-    title(['Box Half Length Stability over Time, threshold=',num2str(boxstabthreshold)]);
-    xlabel('Time')
-    ylabel('Half-Length of Box')
+    title("Box Half Length Stability over Time")
     hold off
 
     
     figure(2)
     plot(time_register,boxidxMatchValue,'LineStyle','-.')
-    title("Average Radius of Curvature calculated in the stability range")
-    xlabel('Time')
-    ylabel('Average R')
 
 end
 
