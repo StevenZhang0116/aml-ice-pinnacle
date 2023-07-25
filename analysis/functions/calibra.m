@@ -8,6 +8,10 @@
 
 function [convratio] = calibra(basepath,subfolder,calind)    
     if calind == 1
+        disp("*************************")
+        disp("=== Start Calibration ===")
+        disp("*************************")
+
         caliimg = 'calibration.JPG';
         
         f = imread([basepath,subfolder,caliimg]);

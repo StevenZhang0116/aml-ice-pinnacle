@@ -2,14 +2,16 @@
 % Main function of data analysis of pinnacle experiment (zoomed in view)
 %
 % Steven Zhang, Courant Institute
-% Updated Mar 2023
+% Updated Jul 2023
 %--------------------------------------------------------------------------
 
 close all
 clear
 warning('off')
 
+addpath('functions');
 
+% declare analyze object 
 basepath = '../../experiments/';
 filepath = '2023-04-05-b';
 basepath = [basepath,filepath];
@@ -18,15 +20,6 @@ conv_index = 1;
 
 fc = func_curve();
 
-% define constants
-peakboxrange = linspace(100,1500,20); % peak box size [~601.6]
-% peakboxrange = [4000/2];  %[601.6/2]
-dt = 10; % s
-time_register = []; % time register
-curv_register = []; % curvature register
-arclength_register = []; 
-localcurv_register = []; % local curvature register
-
 convratio = calibra(basepath,subfolder,1);
 
 path = [basepath,subfolder];
@@ -34,12 +27,24 @@ S = dir(fullfile(path,'**','*.JPG'));
 names = {S.name};
 
 % functionality index
-overlay = 1;
+overlay = 0;
 inorout = 0;
 testdemo = 0;
+testrange = 1;
 
+% define constants, iterative object, and other data structures
+peakboxrange = linspace(100,1500,20); % peak box size [~601.6]
+% peakboxrange = [4000/2];  %[601.6/2]
+dt = 10; % s
+time_register = []; % time register
+curv_register = []; % curvature register
+arclength_register = []; 
+
+localcurv_register = []; % local curvature register
 callen = floor((length(names)+5)/10);
-boundcoll = cell(1,callen); % save tracking result
+boundCell = cell(1,callen); % save tracking result
+boxidxCell = cell(1,callen);
+boxidxMatchValue = [];
 
 % main loop
 cnt = 1;
@@ -50,6 +55,9 @@ for jjj = 1:length(names)
         % 0: set as 0; 2: run hist; 3: normal; 
         % 4: pass; other value: change sparse point threshold
         % === End === 
+        disp("*************************")
+        disp("=== Start Calculation ===")
+        disp("*************************")
         execind = 3; 
         while execind ~= 4 && execind ~= 0
             try
@@ -157,7 +165,6 @@ for jjj = 1:length(names)
                 
                     end
 
-                    
                     % change unit
                     peak_x = peak_x * convratio; 
                     peak_y = peak_y * convratio; 
@@ -207,6 +214,10 @@ for jjj = 1:length(names)
                 xlabel('Box Length / 2 (pixel)')
                 ylabel('Radius of Curvature (cm)')
                 title('BoxLength Sensitivity')
+                [minidx,maxidx] = find_longest_interval([peakboxrange;rk_lst]',0.02);
+                % visually 
+                xline(peakboxrange(minidx),'LineStyle','--');
+                xline(peakboxrange(maxidx),'LineStyle','--');
 
                 ax5 = subplot(1,6,5);
                 xxx = polyval(p1,xxss); % x = f(s)
@@ -264,13 +275,21 @@ for jjj = 1:length(names)
         end
 
         % data registeration
-        boundcoll{cnt} = [peak_x;peak_y];
-        cnt = cnt + 1;
+        boundCell{cnt} = [peak_x;peak_y];
         time_register(end+1) = jjj*dt;
         curv_register(end+1,:) = rk_lst; 
 
         arclength_register(end+1,:) = norxxss;
         localcurv_register(end+1,:) = cuv;
+
+        % box range iteration
+        stableRange = peakboxrange(minidx:maxidx);
+        boxidxCell{cnt} = stableRange;
+        matchedValue = mean(rk_lst(minidx:maxidx));
+        boxidxMatchValue(end+1) = matchedValue;
+
+        cnt = cnt + 1;
+
     end
 end
 
@@ -301,7 +320,7 @@ if overlay == 1 && testdemo == 1
     usedboundcoll = cell(1,length(checkind)-sum(checkind));
     for i = 1:length(checkind)
         if checkind(i) == 0
-            usedboundcoll{length(checkind(1:i))-sum(checkind(1:i))} = boundcoll{i};
+            usedboundcoll{length(checkind(1:i))-sum(checkind(1:i))} = boundCell{i};
         end
     end
     overlay_func(usedboundcoll,overlay,time_register,filepath(1:end),inorout)
@@ -333,6 +352,26 @@ if localcurv_ind == 1 && testdemo == 0
     xlabel('Shifted Normalized Cumulative Arclength (z-score)','FontSize',14)
     ylabel('Curvature (cm^{-1})','FontSize',14)
 end
+
+if testrange
+    
+
+
+
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
