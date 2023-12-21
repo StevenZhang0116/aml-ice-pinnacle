@@ -3,7 +3,7 @@
 % is smaller than a certain value [threshold]
 %
 % Steven Zhang, Courant Institute
-% Updated Jul Mar 2023
+% Updated Jul 2023
 %--------------------------------------------------------------------------
 
 function [start_idx, end_idx] = find_longest_interval(XY, threshold)

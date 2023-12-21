@@ -18,12 +18,17 @@ yline(0.06,'--','LineWidth',2)
 xline(1275,'--','LineWidth',2)
 xlabel('Time (s)','FontSize',14)
 ylabel('Radius of Curvature (cm)','FontSize',14)
-legend([names],'Location','Northeast')
+% legend([names],'Location','Northeast') %Bobae comment out
 title('Zoom-In Radius of Curvature','FontSize',14)
 %ylim([0 0.15])
 xlim([0,800]); ylim([0,.2])%Bobae
 % xlim([0 1200])
 % set(gca, 'YScale', 'log')
+
+
+%% Bobae
+legend({'2023-02-28-a','2023-03-01-a','2023-03-16-b','2023-03-16-c','2023-03-16-d','2023-03-16-e','2023-04-05-a','2023-04-05-b','2023-04-05-c','2023-04-05-d'},'Location','Northeast');
+
 
 
 

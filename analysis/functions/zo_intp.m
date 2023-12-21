@@ -7,14 +7,18 @@
 
 function [param] = zo_intp(bdx,bdy,filepath,cctime)
     t1 = datetime('now');
-    updown = 2; % theory of curve generated upside down
+    % theory of curve generated upside down
+    updown = 2; 
     bdx_cm = bdx; bdy_cm = bdy; 
-    numpt = 1000; % num of interpolation pt
+    % num of interpolation pt
+    numpt = 1000; 
     [~,ia] = unique(bdx_cm);
     bdx_cm = bdx_cm(ia); bdy_cm = bdy_cm(ia); 
-    xxx = linspace(min(bdx_cm),max(bdx_cm),numpt); % linearly interpolation result
+    % linearly interpolation result
+    xxx = linspace(min(bdx_cm),max(bdx_cm),numpt); 
     yyy = interp1(bdx_cm,bdy_cm,xxx);
-    hei = max(yyy)-min(yyy); % height of current pinnacle
+    % height of current pinnacle
+    hei = max(yyy)-min(yyy); 
     minval = [min(yyy)-0.001,min(yyy)+0.001];
     % might have multiple values if the tip is unclear/blunted
     ind = (yyy > minval(1) & yyy < minval(2));
@@ -29,10 +33,13 @@ function [param] = zo_intp(bdx,bdy,filepath,cctime)
     if index == 1
         % brute force, param setup
         % r accuracy: 0.0005cm
-        rrrange = linspace(0.0005,0.03,60); % radius range
+        % radius range
+        rrrange = linspace(0.0005,0.03,60); 
         % x-y accuracy: 0.05cm 
-        vhrange = linspace(4,20,321); % vertical shift range
-        xhrange = linspace(-0.1,0.1,41); % horizontal shift
+        % vertical shift range
+        vhrange = linspace(4,20,321); 
+        % horizontal shift
+        xhrange = linspace(-0.1,0.1,41); 
         [m,n,x] = ndgrid(rrrange,vhrange,xhrange);
         Z = [m(:),n(:),x(:)];
         mindistset = zeros(length(Z),1);

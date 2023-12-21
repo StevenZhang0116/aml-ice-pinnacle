@@ -35,7 +35,8 @@ testrange = 1;
 % define constants, iterative object, and other data structures
 boxnumcount = 50;
 boxstabthreshold = 0.02;
-peakboxrange = linspace(100,1500,boxnumcount); % peak box half size [~601.6]
+% peak box half size [~601.6]
+peakboxrange = linspace(100,1500,boxnumcount); 
 % peakboxrange = [4000/2];  %[601.6/2]
 dt = 10; % s
 time_register = []; % time register
@@ -187,8 +188,10 @@ for jjj = 1:length(names)
                         px = px+(opt_deg-m+1)*p(m)*rr1.^(opt_deg-m);
                         pxx = pxx+(opt_deg-m+1)*(opt_deg-m)*p(m)*rr1.^(opt_deg-m-1);
                     end
-                    k0 = max(abs(pxx)./(1+px.^2).^(3/2)); % curvature
-                    rk = 1/k0; % radius of curvature
+                    % curvature
+                    k0 = max(abs(pxx)./(1+px.^2).^(3/2)); 
+                    % radius of curvature
+                    rk = 1/k0; 
                     disp(['box size: ', num2str(smallran), ...
                         newline 'radius of curvature: ',num2str(rk)])
                     rk_lst(end+1) = rk;
@@ -198,7 +201,8 @@ for jjj = 1:length(names)
                     N = length(peak_x);
                     ds = sqrt((peak_x(2:end)-peak_x(1:end-1)).^2+...
                         (peak_y(2:end)-peak_y(1:end-1)).^2);
-                    s = zeros(N,1); % arclength accumulation
+                    % arclength accumulation
+                    s = zeros(N,1); 
                     for n = 1:N-1
                         s(n+1) = s(n) + ds(n);
                     end

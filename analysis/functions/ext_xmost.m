@@ -1,3 +1,11 @@
+%--------------------------------------------------------------------------
+% Extract the leftmost and rightmost points (at given y coordinate) to 
+% better define a one-layer-boundary. 
+%
+% Steven Zhang, Courant Institute
+% Updated Dec 2023
+%--------------------------------------------------------------------------
+
 function [newbdx,newbdy] = ext_xmost(xx,yy)
     newbdx = []; newbdy = [];
     yy = round(yy); % round to the closest pixel

@@ -50,11 +50,13 @@ for i = 1:lln
     if i ~= lln && (mod(i,intv) == 5) && i < upptime/dt
         pic = imread([basepath,subfolder,spimage]);
         disp(['==',spimage,'=='])
-        xdim = size(pic,1); % dimension
+        % dimension
+        xdim = size(pic,1); 
         ydim = size(pic,2);
-        leftcut = 50; % cutoff dimension, relates to size of pinnacle
+        % cutoff dimension, relates to size of pinnacle
+        leftcut = 50; 
         rightcut = ydim-leftcut;
-
+        % [HYPER]: ignore part of bottom which is likely to be unclear
         basecut = 500; 
         
         pic = rgb2gray(pic);
@@ -65,7 +67,8 @@ for i = 1:lln
         [BW,~,Gh,Gv] = edge(pic,'sobel');
         G = Gh.^2 + Gv.^2;
         
-        ll = contourc(double(G)); % find contour line
+        % find contour line
+        ll = contourc(double(G)); 
         sub = ll(1,:) <= 0 | ll(2,:) <= 0 | ll(1,:) >= xdim | ll(2,:) >= ydim ...
             | ll(1,:) <= leftcut | ll(1,:) >= rightcut | ll(2,:) >= ydim-basecut; % ignore base
         
@@ -83,7 +86,8 @@ for i = 1:lln
         rcc = min(newbdx) + 0.55 * rangx;
         cuy = newbdy((newbdx > lcc) & (newbdx < rcc));
         cpeak = min(cuy); 
-
+        
+        % [HYPER]
         % actual cutoff by design (use the height of pinnacle)
         % only use 90% in case some shaping error at bottom
         actualcut = cpeak + 0.9 * HH / convratio; 

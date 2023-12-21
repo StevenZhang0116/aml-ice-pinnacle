@@ -4,13 +4,6 @@
 % Steven Zhang, Courant Institute
 % Updated Mar 2023
 %--------------------------------------------------------------------------
-% path = 'curve-out-data/';
-% S = dir(fullfile(path,'**','*.mat'));
-% names = {S.name};
-% name = names{1} %choose whatever i gives you data set you want
-% test = load([path,name]).datacoll;
-% cctime = test(:,1);
-% test = test(:,2:end);
 
 function [] = overlay_func(boundcoll,overlay,cctime,name,inorout)
     % zoom out view
@@ -35,7 +28,6 @@ function [] = overlay_func(boundcoll,overlay,cctime,name,inorout)
     axis equal
     for i = 1:length(boundcoll)
         data = boundcoll{i}; 
-        data = boundcoll;
         xx = data(1,:); yy = data(2,:);
         [~,pp] = min(yy);
         peakpt = [xx(pp),yy(pp)];
